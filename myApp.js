@@ -214,8 +214,23 @@ var findPersonById = function(personId, done) {
 
 var findEditThenSave = function(personId, done) {
   var foodToAdd = 'hamburger';
+  Person.findById(personId,function(err,data){
+    if(err){
+      done(err);
+    }else{
+      data.favoriteFoods.push(foodToAdd);
+      data.save(function(error,dt){
+        if(error){
+          done(error);
+        }else{
+          done(null,dt);
+        }
+      });
+      
+    }
+  });
   
-  done(null/*, data*/);
+  
 };
 
 /** 9) New Update : Use `findOneAndUpdate()` */
@@ -235,8 +250,15 @@ var findEditThenSave = function(personId, done) {
 
 var findAndUpdate = function(personName, done) {
   var ageToSet = 20;
-
-  done(null/*, data*/);
+  Person.findOneAndUpdate({name: personName},{age: ageToSet}
+  ,{new: true},function(err,data){
+    if(err){
+      done(err);
+    }else{
+      done(null,data);
+    }
+  });
+  
 };
 
 /** # CRU[D] part IV - DELETE #
@@ -250,8 +272,13 @@ var findAndUpdate = function(personName, done) {
 // As usual, use the function argument `personId` as search key.
 
 var removeById = function(personId, done) {
-  
-  done(null/*, data*/);
+  Person.findByIdAndRemove(personId,function(err,data){
+    if(err){
+      done(err);
+    }else{
+      done(null,data);
+    }
+  });
     
 };
 
